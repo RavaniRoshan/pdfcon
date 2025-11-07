@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Agent Client Protocol (ACP) – A Developer's 101 Guide</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --text: #1a1a1a;
+      --accent: #2563eb;
+      --accent-light: #dbeafe;
+      --border: #e5e7eb;
+      --code-bg: #f9fafb;
+      --shadow: rgba(0, 0, 0, 0.05);
+      --font-main: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      --font-mono: 'SF Mono', 'Monaco', 'Inconsolata', monospace;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: var(--font-main);
+      line-height: 1.7;
+      color: var(--text);
+      background: var(--bg);
+      padding: 2rem;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    @media print {
+      body {
+        padding: 1.5rem;
+        max-width: 100%;
+      }
+      h1, h2, h3 {
+        page-break-after: avoid;
+        page-break-inside: avoid;
+      }
+      pre, code {
+        page-break-inside: avoid;
+      }
+    }
+
+    h1 {
+      font-size: 2.4rem;
+      font-weight: 800;
+      margin: 1.5rem 0 1rem;
+      color: var(--accent);
+      letter-spacing: -0.02em;
+    }
+
+    h2 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin: 2rem 0 1rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 2px solid var(--accent-light);
+      color: var(--text);
+    }
+
+    h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin: 1.5rem 0 0.8rem;
+      color: var(--accent);
+    }
+
+    p, li {
+      margin-bottom: 1rem;
+    }
+
+    ul, ol {
+      padding-left: 1.5rem;
+      margin-bottom: 1.2rem;
+    }
+
+    blockquote {
+      background: var(--accent-light);
+      border-left: 4px solid var(--accent);
+      padding: 1rem 1.2rem;
+      margin: 1.5rem 0;
+      font-style: italic;
+      border-radius: 0 6px 6px 0;
+    }
+
+    code {
+      font-family: var(--font-mono);
+      background: var(--code-bg);
+      padding: 0.2rem 0.4rem;
+      border-radius: 4px;
+      font-size: 0.95em;
+    }
+
+    pre {
+      background: var(--code-bg);
+      padding: 1.2rem;
+      border-radius: 8px;
+      overflow-x: auto;
+      margin: 1.5rem 0;
+      font-family: var(--font-mono);
+      font-size: 0.95em;
+      border: 1px solid var(--border);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.5rem 0;
+    }
+
+    th, td {
+      padding: 0.8rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+
+    th {
+      background: var(--accent-light);
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    .page-break {
+      page-break-before: always;
+    }
+
+    .highlight {
+      background: #fffbeb;
+      padding: 0.2rem 0.4rem;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+
+    .footer {
+      margin-top: 3rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.9rem;
+      color: #666;
+    }
+
+    .logo-note {
+      text-align: center;
+      font-size: 0.9rem;
+      color: #888;
+      margin-top: 2rem;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Agent Client Protocol (ACP)</h1>
+<h2>A Developer's 101 Guide</h2>
+<blockquote>
+  "Use the agent you prefer inside the IDE you love."<br>
+  — JetBrains × Zed, October 2025
+</blockquote>
+
+<h2>Page 1: What Is ACP?</h2>
+<p>
+  The <strong>Agent Client Protocol (ACP)</strong> is an <strong>open, JSON-RPC–based communication standard</strong> that enables seamless integration between <strong>code editors/IDEs</strong> (the <em>Client</em>) and <strong>AI-powered coding assistants</strong> (the <em>Agent</em>).
+</p>
+<p>
+  Think of ACP as <strong>"LSP for AI agents."</strong> Just as the Language Server Protocol (LSP) decoupled language intelligence from editors, ACP decouples AI coding assistance from any single IDE or model provider.
+</p>
+<h3>Core Idea</h3>
+<ul>
+  <li>Editors (Zed, VS Code, Neovim, JetBrains, etc.) <strong>spawn AI agents as local subprocesses</strong>.</li>
+  <li>All communication happens over <strong>stdin/stdout using JSON-RPC 2.0</strong>.</li>
+  <li>No cloud round-trips. No proprietary APIs. No glue code.</li>
+</ul>
+<p>
+  This means:
+  <ul>
+    <li>You can run <strong>Google's Gemini CLI</strong> inside <strong>Neovim</strong>.</li>
+    <li>Use <strong>Anthropic's Claude Code</strong> in <strong>JetBrains</strong>.</li>
+    <li>Switch agents without changing your workflow.</li>
+  </ul>
+</p>
+<p>
+  ACP is <strong>editor-agnostic, agent-agnostic, and language-agnostic</strong>—designed for a future where AI tools are <strong>interchangeable components</strong>, not walled gardens.
+</p>
+<blockquote>
+  <strong>Key Analogy</strong>:<br>
+  LSP = "One language server for any editor."<br>
+  ACP = "One AI agent for any editor."
+</blockquote>
+
+<div class="page-break"></div>
+
+<h2>Page 2: Why ACP Matters</h2>
+<p>
+  Before ACP, every editor–agent integration required <strong>custom glue code</strong>. Supporting a new AI model meant writing new plugins for every IDE—a massive duplication of effort.
+</p>
+<p>
+  ACP solves this with a <strong>single, standardized interface</strong>.
+</p>
+
+<h3>Key Benefits</h3>
+<table>
+  <thead>
+    <tr>
+      <th>Benefit</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td><strong>Interoperability</strong></td><td>Plug any ACP-compliant agent into any ACP-aware editor.</td></tr>
+    <tr><td><strong>Local &amp; Secure</strong></td><td>Agents run on your machine. The editor mediates all file/terminal access.</td></tr>
+    <tr><td><strong>Rich UX</strong></td><td>Agents stream live diffs, execution plans, progress bars, and Markdown-formatted responses.</td></tr>
+    <tr><td><strong>Transparent Control</strong></td><td>Sensitive actions (e.g., file writes) require explicit user permission.</td></tr>
+    <tr><td><strong>Future-Proof</strong></td><td>Built to support multi-agent workflows, modes, and tool integrations.</td></tr>
+  </tbody>
+</table>
+
+<h3>Real-World Impact</h3>
+<ul>
+  <li><strong>Zed</strong> launched native ACP support in August 2025, enabling <strong>Gemini CLI</strong> integration out of the box.</li>
+  <li><strong>JetBrains</strong> announced ACP plugin support, calling it "the foundation for open AI interoperability."</li>
+  <li>Community plugins now bring ACP to <strong>Neovim</strong>, <strong>Emacs</strong>, and <strong>marimo notebooks</strong>.</li>
+</ul>
+
+<blockquote>
+  <strong>Open Standard</strong>: Licensed under <strong>Apache 2.0</strong>. Hosted at <a href="https://agentclientprotocol.com">agentclientprotocol.com</a>.
+</blockquote>
+
+<div class="page-break"></div>
+
+<h2>Page 3: How ACP Works — Protocol Architecture</h2>
+<p>
+  ACP uses <strong>bidirectional JSON-RPC over stdio</strong>, mirroring LSP's simplicity and reliability.
+</p>
+
+<h3>Core Workflow</h3>
+<ol>
+  <li><strong>Initialization</strong><br>
+    Editor sends <code>initialize</code> with capabilities (file system, terminal, etc.). Agent replies with its supported features.</li>
+  <li><strong>Session Start</strong><br>
+    Editor calls <code>session/new</code> with working directory and optional MCP tool configs. Agent returns a unique <code>sessionId</code>.</li>
+  <li><strong>User Prompt</strong><br>
+    Editor sends <code>session/prompt</code> with user input and code context.</li>
+  <li><strong>Streaming Response</strong><br>
+    Agent sends multiple <code>session/update</code> notifications containing:
+    <ul>
+      <li>Partial Markdown text</li>
+      <li>Code diffs (patches)</li>
+      <li>Tool call requests (<code>fs/read</code>, <code>terminal/exec</code>)</li>
+      <li>Execution <strong>plans</strong> (multi-step reasoning)</li>
+    </ul>
+  </li>
+  <li><strong>Tool Execution &amp; Permissions</strong><br>
+    If the agent wants to read a file or run a command, it sends a <code>tool_call</code> update. The editor may prompt: <em>"Allow agent to write to main.py?"</em>
+  </li>
+</ol>
+
+<p>
+  <strong>All file and terminal operations are mediated by the editor</strong>, ensuring user control and security.
+</p>
+
+<h3>Example: Initialize Request</h3>
+<pre><code>{
+  "jsonrpc": "2.0",
+  "id": 0,
+  "method": "initialize",
+  "params": {
+    "protocolVersion": 1,
+    "clientCapabilities": {
+      "fs": { "readTextFile": true, "writeTextFile": true },
+      "terminal": true
+    }
+  }
+}</code></pre>
+
+<div class="page-break"></div>
+
+<h2>Page 4: Advanced Features</h2>
+
+<h3>1. Agent Plans</h3>
+<p>
+  Agents can send structured <strong>plans</strong>—a list of intended actions:
+</p>
+<pre><code>{
+  "sessionUpdate": "plan",
+  "steps": [
+    "Analyze current test coverage",
+    "Generate missing unit tests",
+    "Run pytest to validate"
+  ]
+}</code></pre>
+<p>
+  Editors render these as <strong>checklists</strong>, giving users visibility into the agent's "thinking."
+</p>
+
+<h3>2. Session Modes</h3>
+<p>
+  Agents support <strong>modes</strong> like:
+  <ul>
+    <li><code>"Ask"</code> (Q&amp;A only)</li>
+    <li><code>"Code"</code> (generate/edit code)</li>
+    <li><code>"Architect"</code> (design systems, suggest refactorings)</li>
+  </ul>
+  Modes can be switched mid-session via <code>session/set_mode</code>.
+</p>
+
+<h3>3. MCP Integration</h3>
+<p>
+  ACP is designed to work with the <strong>Model Context Protocol (MCP)</strong>:
+  <ul>
+    <li>Editor configures MCP tool servers (e.g., database, REST API).</li>
+    <li>Passes MCP config to agent at session start.</li>
+    <li>Agent uses MCP to access external data <strong>without reimplementing connectivity</strong>.</li>
+  </ul>
+</p>
+<blockquote>
+  <strong>Synergy</strong>:<br>
+  • <strong>ACP</strong> = Agent ↔ Editor (UI, code edits, local tools)<br>
+  • <strong>MCP</strong> = Agent ↔ External Services (APIs, databases)
+</blockquote>
+
+<div class="page-break"></div>
+
+<h2>Page 5: Real-World Usage & Ecosystem</h2>
+
+<h3>Supported Editors (Clients)</h3>
+<table>
+  <thead>
+    <tr><th>Editor</th><th>Status</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><strong>Zed</strong></td><td>Native support (since Aug 2025)</td></tr>
+    <tr><td><strong>Neovim</strong></td><td>Via <code>CodeCompanion.nvim</code></td></tr>
+    <tr><td><strong>Emacs</strong></td><td>Via <code>agent-shell.el</code></td></tr>
+    <tr><td><strong>JetBrains IDEs</strong></td><td>Plugin in development</td></tr>
+    <tr><td><strong>marimo</strong></td><td>Notebook integration</td></tr>
+    <tr><td><strong>VS Code</strong></td><td>Community adapters in progress</td></tr>
+  </tbody>
+</table>
+
+<h3>Supported Agents</h3>
+<table>
+  <thead>
+    <tr><th>Agent</th><th>Notes</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><strong>Google Gemini CLI</strong></td><td>Official ACP integration in Zed</td></tr>
+    <tr><td><strong>Anthropic Claude Code</strong></td><td>Wrapped via Zed bridge (public beta)</td></tr>
+    <tr><td><strong>OpenAI Codex CLI</strong></td><td>Community-tested</td></tr>
+    <tr><td><strong>Goose, VT Code, Stakpak</strong></td><td>Listed in ACP registry</td></tr>
+    <tr><td><strong>Custom CLI tools</strong></td><td>Any stdio-based AI tool can be wrapped</td></tr>
+  </tbody>
+</table>
+
+<h3>Example Workflow</h3>
+<ol>
+  <li>User opens <code>src/utils.py</code> in Zed.</li>
+  <li>Types: <em>"Add type hints and unit tests."</em></li>
+  <li>Zed sends prompt via ACP to Gemini CLI.</li>
+  <li>Agent:
+    <ul>
+      <li>Reads file via <code>fs/read_text_file</code></li>
+      <li>Generates code + tests</li>
+      <li>Sends diff via <code>session/update</code></li>
+      <li>Requests permission to write</li>
+    </ul>
+  </li>
+  <li>User reviews inline diff → clicks <strong>Apply</strong>.</li>
+</ol>
+<p>
+  All code stays <strong>local</strong>. No data leaves the machine.
+</p>
+
+<div class="page-break"></div>
+
+<h2>Page 6: Building with ACP</h2>
+
+<h3>Official SDKs</h3>
+<table>
+  <thead>
+    <tr><th>Language</th><th>SDK</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Rust</td><td><code>agent-client-protocol</code> crate</td></tr>
+    <tr><td>TypeScript</td><td><code>@agentclientprotocol/sdk</code></td></tr>
+    <tr><td>Kotlin/Java</td><td><code>acp-kotlin</code></td></tr>
+    <tr><td>Python, Go, Dart</td><td>Community SDKs</td></tr>
+  </tbody>
+</table>
+
+<h3>Minimal Agent Skeleton (Conceptual)</h3>
+<pre><code>fn handle_initialize(params) -> Capabilities {
+  Capabilities {
+    fs: FsCapabilities { read: true, write: true },
+    terminal: true,
+    mcp: true
+  }
+}
+
+fn handle_session_prompt(session_id, prompt) {
+  let response = llm.generate(prompt);
+  for chunk in response.stream() {
+    send_notification("session/update", SessionUpdate::Text(chunk));
+  }
+  send_notification("session/update", SessionUpdate::Diff(generate_diff()));
+}</code></pre>
+
+<h3>Getting Started</h3>
+<ol>
+  <li>Visit <a href="https://agentclientprotocol.com">agentclientprotocol.com</a></li>
+  <li>Clone the <a href="https://github.com/agentclientprotocol/agent-client-protocol">GitHub repo</a></li>
+  <li>Run the example agent</li>
+  <li>Connect it to Zed or Neovim</li>
+</ol>
+
+<blockquote>
+  <strong>Tip</strong>: You can wrap <strong>any CLI-based AI tool</strong> into ACP with <100 lines of adapter code.
+</blockquote>
+
+<div class="page-break"></div>
+
+<h2>Page 7: The Future of ACP</h2>
+
+<h3>Multi-Agent Coordination</h3>
+<p>
+  While ACP connects <strong>one editor to one agent</strong>, it lays groundwork for <strong>multi-agent systems</strong>:
+  <ul>
+    <li>Editor spawns <strong>Agent A</strong> (coder) and <strong>Agent B</strong> (tester).</li>
+    <li>Both use ACP sessions.</li>
+    <li>They coordinate via shared files or MCP tool servers.</li>
+    <li>User stays in the loop via unified UI.</li>
+  </ul>
+</p>
+<p>
+  JetBrains and others are already exploring <strong>Agent-to-Agent (A2A)</strong> protocols that build on ACP for orchestration.
+</p>
+
+<h3>Broader Vision</h3>
+<p>
+  ACP is part of a <strong>new AI tooling stack</strong>:
+  <ul>
+    <li><strong>Agents.md</strong>: Standardizes agent prompting</li>
+    <li><strong>MCP</strong>: Standardizes tool access</li>
+    <li><strong>ACP</strong>: Standardizes editor interaction</li>
+  </ul>
+  Together, they enable <strong>modular, auditable, and user-controlled AI workflows</strong>.
+</p>
+
+<blockquote>
+  "ACP could lower switching costs between AI assistants, forcing providers to compete on quality—not lock-in."<br>
+  — Hacker News, September 2025
+</blockquote>
+
+<h3>Final Thought</h3>
+<p>
+  By making AI coding assistants <strong>truly plug-and-play</strong>, ACP empowers developers to <strong>choose their tools freely</strong>—and build the future of agentic software, together.
+</p>
+
+<div class="footer">
+  <h3>Resources</h3>
+  <ul>
+    <li>Official Site: <a href="https://agentclientprotocol.com">https://agentclientprotocol.com</a></li>
+    <li>GitHub: <a href="https://github.com/agentclientprotocol/agent-client-protocol">github.com/agentclientprotocol/agent-client-protocol</a></li>
+    <li>Zed + ACP Demo: <a href="https://ainativedev.io/news/zed-debuts-agent-client-protocol...">AI Native Dev</a></li>
+    <li>JetBrains Announcement: <a href="https://blog.jetbrains.com/ai/2025/10/jetbrains-zed-open-interoperability/">JetBrains AI Blog</a></li>
+  </ul>
+</div>
+
+<div class="logo-note">
+  Designed for developers • October 2025 • #AgentClientProtocol
+</div>
+
+</body>
+</html>

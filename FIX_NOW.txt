@@ -1,0 +1,99 @@
+================================================================================
+                        FIX YOUR ERROR RIGHT NOW
+================================================================================
+
+YOU'RE SEEING THIS ERROR:
+    "DOPPIO_API_KEY environment variable is not set."
+
+HERE'S HOW TO FIX IT IN 2 MINUTES:
+================================================================================
+
+STEP 1: Get Your Free API Key (1 minute)
+-----------------------------------------
+1. Open your web browser
+2. Go to: https://doppio.sh
+3. Click "Sign Up" (it's FREE)
+4. Copy your API key (looks like: dp_xxxxxxxxxxxxx)
+
+
+STEP 2: Run the Setup Helper (30 seconds)
+------------------------------------------
+
+>>> IF YOU'RE ON WINDOWS:
+    Double-click this file: set_api_key.bat
+
+    (If that doesn't work, open Command Prompt and run:)
+    python set_api_key.py
+
+>>> IF YOU'RE ON MAC/LINUX:
+    Open Terminal and run:
+    python3 set_api_key.py
+
+
+STEP 3: Paste Your API Key (10 seconds)
+----------------------------------------
+When the helper asks, paste your API key and press Enter.
+
+That's it! The helper will create the .env file for you.
+
+
+STEP 4: Test It (10 seconds)
+-----------------------------
+Run this command:
+
+>>> WINDOWS:
+    python src\generator.py
+
+>>> MAC/LINUX:
+    python3 src/generator.py
+
+You should see: "✅ Success! PDF generated..."
+
+DONE! Your PDF is in the output/ folder! 🎉
+
+================================================================================
+                    ALTERNATIVE: QUICK MANUAL FIX
+================================================================================
+
+If the helper doesn't work, create .env file manually:
+
+1. Create a new text file in this folder
+2. Name it exactly: .env (with the dot, no .txt!)
+3. Open it and type this line:
+   DOPPIO_API_KEY=dp_your_actual_key_here
+
+   (Replace dp_your_actual_key_here with your real key from doppio.sh)
+
+4. Save and close the file
+5. Run: python src\generator.py
+
+
+IMPORTANT FOR WINDOWS USERS:
+-----------------------------
+When saving in Notepad:
+- File name: .env
+- Save as type: All Files (NOT Text Documents!)
+- Make sure it's saved in the pdfcon folder
+
+
+================================================================================
+                        STILL HAVING TROUBLE?
+================================================================================
+
+Run the diagnostic tool:
+    python check_setup.py
+
+This will tell you exactly what's wrong and how to fix it.
+
+Or check these detailed guides:
+- FIX_API_KEY.md (complete troubleshooting)
+- START_HERE.md (project overview)
+- API_KEY_SETUP.txt (step-by-step guide)
+
+================================================================================
+
+Need the API key again? https://doppio.sh (FREE account)
+
+You'll have PDFs generating in 2 minutes! 🚀
+
+================================================================================

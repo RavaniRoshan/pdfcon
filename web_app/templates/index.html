@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Generation Agent</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>PDF Generation Agent</h1>
+            <p>Convert your content into beautifully styled PDFs</p>
+        </header>
+
+        <div class="mode-selector">
+            <button id="prompt-tab" class="tab-button active" onclick="switchMode('prompt')">
+                📝 Prompt Mode
+            </button>
+            <button id="markdown-tab" class="tab-button" onclick="switchMode('markdown')">
+                📄 Markdown Mode
+            </button>
+        </div>
+
+        <div id="prompt-instructions" class="instructions">
+            <h3>💡 How to write effective prompts:</h3>
+            <ul>
+                <li><strong>Be specific:</strong> Describe exactly what you want in your PDF</li>
+                <li><strong>Include structure:</strong> Mention sections like headers, lists, or tables</li>
+                <li><strong>Specify formatting:</strong> Note any special styling or emphasis needed</li>
+                <li><strong>Example:</strong> "Create a professional resume with contact info, skills section, and work experience"</li>
+            </ul>
+        </div>
+
+        <div id="markdown-instructions" class="instructions hidden">
+            <h3>📝 Markdown formatting tips:</h3>
+            <ul>
+                <li><strong>Headers:</strong> Use # ## ### for different heading levels</li>
+                <li><strong>Lists:</strong> Use - for bullets or 1. 2. 3. for numbered lists</li>
+                <li><strong>Code:</strong> Wrap inline code with `backticks` or use ``` for blocks</li>
+                <li><strong>Links:</strong> Use [text](url) format</li>
+                <li><strong>Tables:</strong> Use | to separate columns</li>
+            </ul>
+        </div>
+
+        <form id="pdf-form" class="form">
+            <div class="form-group">
+                <textarea
+                    id="content-input"
+                    name="content"
+                    placeholder="Enter your content here..."
+                    required
+                ></textarea>
+            </div>
+
+            <input type="hidden" id="mode-input" name="mode" value="prompt">
+
+            <div class="form-actions">
+                <button type="submit" class="generate-btn" id="generate-btn">
+                    🚀 Generate PDF
+                </button>
+            </div>
+        </form>
+
+        <div id="loading" class="loading hidden">
+            <div class="spinner"></div>
+            <p>Generating your PDF...</p>
+        </div>
+
+        <div id="result" class="result hidden">
+            <div class="success-message">
+                <h3>✅ PDF Generated Successfully!</h3>
+                <p>Your PDF is ready for download.</p>
+                <a id="download-link" href="#" class="download-btn" target="_blank">
+                    📥 Download PDF
+                </a>
+            </div>
+        </div>
+
+        <div id="error" class="error hidden">
+            <div class="error-message">
+                <h3>❌ Error</h3>
+                <p id="error-text">Something went wrong. Please try again.</p>
+                <button onclick="hideError()" class="retry-btn">Try Again</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

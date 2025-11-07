@@ -1,0 +1,143 @@
+================================================================================
+                    FIX API KEY ERROR - SIMPLE STEPS
+================================================================================
+
+ERROR YOU'RE SEEING:
+    "DOPPIO_API_KEY environment variable is not set."
+
+================================================================================
+                            QUICK FIX (3 STEPS)
+================================================================================
+
+STEP 1: Get Your API Key
+-------------------------
+1. Go to: https://doppio.sh
+2. Sign up (FREE)
+3. Copy your API key (looks like: dp_xxxxxxxxxxxxx)
+
+
+STEP 2: Run Setup Helper
+-------------------------
+
+>>> WINDOWS USERS:
+    Double-click:  set_api_key.bat
+    (or run: python set_api_key.py)
+
+>>> MAC/LINUX USERS:
+    Run in terminal: python3 set_api_key.py
+
+
+STEP 3: Paste Your Key
+-----------------------
+When prompted, paste your API key and press Enter.
+
+DONE! Try running your script again.
+
+================================================================================
+                    ALTERNATIVE: MANUAL SETUP
+================================================================================
+
+If the helper doesn't work, create .env file manually:
+
+>>> WINDOWS:
+    1. Open Notepad
+    2. Type: DOPPIO_API_KEY=dp_your_actual_key_here
+    3. Click "File" → "Save As"
+    4. File name: .env (include the dot!)
+    5. Save as type: All Files (NOT Text Document!)
+    6. Save location: Inside pdfcon folder
+    7. Click Save
+
+>>> MAC/LINUX:
+    Run in terminal:
+    cd pdfcon
+    echo "DOPPIO_API_KEY=dp_your_actual_key_here" > .env
+
+    (Replace dp_your_actual_key_here with your real key!)
+
+================================================================================
+                        VERIFY IT WORKS
+================================================================================
+
+Run this command:
+
+>>> WINDOWS:
+    python src\generator.py
+
+>>> MAC/LINUX:
+    python3 src/generator.py
+
+You should see:
+    "🚀 Sending HTML to Doppio.sh for PDF rendering..."
+    "✅ Success! PDF generated..."
+
+If you see this, YOU'RE DONE! ✅
+
+================================================================================
+                        STILL NOT WORKING?
+================================================================================
+
+Check these common mistakes:
+
+1. FILE LOCATION - .env must be in pdfcon folder:
+
+   pdfcon/
+   ├── .env          ← Must be HERE
+   ├── src/
+   │   └── generator.py
+   └── output/
+
+2. FILE NAME - Must be exactly: .env
+   NOT: env (missing dot)
+   NOT: .env.txt (wrong extension)
+   NOT: .env.example (that's the template)
+
+3. API KEY FORMAT - Should look like:
+   DOPPIO_API_KEY=dp_xxxxxxxxxxxxx
+
+   NO SPACES around the = sign!
+   Key should start with "dp_"
+
+4. RESTART TERMINAL - After creating .env:
+   - Close your command prompt/terminal
+   - Open a NEW one
+   - Try again
+
+================================================================================
+                      TEMPORARY WORKAROUND
+================================================================================
+
+If you just want to test it quickly, run:
+
+>>> WINDOWS (Command Prompt):
+    set DOPPIO_API_KEY=dp_your_key_here
+    python src\generator.py
+
+>>> WINDOWS (PowerShell):
+    $env:DOPPIO_API_KEY="dp_your_key_here"
+    python src\generator.py
+
+>>> MAC/LINUX:
+    export DOPPIO_API_KEY=dp_your_key_here
+    python3 src/generator.py
+
+This sets the key temporarily (only for current terminal session).
+
+================================================================================
+                        NEED MORE HELP?
+================================================================================
+
+See these files for detailed instructions:
+    - FIX_API_KEY.md (complete troubleshooting guide)
+    - START_HERE.md (project overview)
+    - QUICK_START.md (command reference)
+
+Or run the helper script again:
+    - Windows: set_api_key.bat
+    - Mac/Linux: python3 set_api_key.py
+
+================================================================================
+
+Good luck! You'll have PDFs generating in 2 minutes! 🚀
+
+================================================================================
