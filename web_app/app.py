@@ -227,7 +227,12 @@ def process_markdown_content(content, mode="markdown"):
 
 @app.route('/')
 def index():
-    """Render the main page with Claude-style interface"""
+    """Render the landing page as the default page"""
+    return render_template('landing.html')
+
+@app.route('/app')
+def app_interface():
+    """Render the original app interface"""
     return render_template('index.html')
 
 @app.route('/generate-pdf', methods=['POST'])

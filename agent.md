@@ -111,11 +111,11 @@ Our system consists of three main components...
    - REST API integration
 
 ## Integration
-\`\`\`python
+```python
 def connect_services():
     frontend.connect(backend_api)
     return status
-\`\`\`
+```
 ```
 
 ## Examples
@@ -144,11 +144,11 @@ def connect_services():
 ## Authentication
 All requests must include an API key in the header:
 
-\`\`\`json
+```json
 {
   "Authorization": "Bearer YOUR_API_KEY"
 }
-\`\`\`
+```
 ```
 
 ### Business Report
@@ -237,6 +237,50 @@ python-dotenv==0.19.0
 2. Install dependencies
 3. Configure environment variables
 4. Start development server
+
+## Recent Enhancements
+
+### Landing Page Redesign
+
+We've implemented a comprehensive redesign of the landing page with the following improvements:
+
+1. **Updated Color Scheme**:
+   - Implemented a warm beige/tan color palette with brown accents for light mode
+   - Created a deep brown/taupe color scheme for dark mode
+   - Ensured consistent application of colors across all UI components
+
+2. **Typography Updates**:
+   - Changed primary font to Libre Baskerville (serif)
+   - Set secondary font to Lora (serif)
+   - Configured monospace font as IBM Plex Mono
+   - Added Times New Roman for logo and navigation elements
+   - Integrated Caveat font for CTA section with bold weighting
+
+3. **Visual Enhancements**:
+   - Enhanced glass morphism effect on navigation bar with increased blur (15px) and adjusted transparency
+   - Improved button styling with better text visibility in both light and dark modes
+   - Added glass-like hover effects to buttons with backdrop blur and bold text transformation
+   - Implemented theme toggle functionality for switching between light and dark modes
+
+4. **UI Component Improvements**:
+   - Redesigned hero section with updated gradient background
+   - Enhanced feature cards with improved styling and animations
+   - Updated pricing section with better visual hierarchy
+   - Improved testimonials section design
+   - Enhanced CTA section with Caveat font and bold text
+
+5. **Responsive Design**:
+   - Maintained responsive behavior across all device sizes
+   - Improved mobile navigation with hamburger menu
+   - Optimized spacing and sizing for different screen dimensions
+
+### Implementation Details
+
+- Used CSS variables for consistent theming across light and dark modes
+- Leveraged GSAP for smooth animations and transitions
+- Implemented Vanilla JavaScript for interactive elements
+- Maintained accessibility standards throughout the redesign
+- Ensured cross-browser compatibility
 
 ## Support and Resources
 
