@@ -1,22 +1,23 @@
-# HTML to PDF Generator
+# content.io - Creative PDF Generator
 
-A Python-based HTML to PDF conversion tool using the [Doppio API](https://doppio.sh). This project converts professionally styled HTML templates into high-quality PDF documents with support for custom styling, page breaks, and print-optimized layouts.
+An AI-powered creative workspace that transforms your ideas into professionally styled PDFs using natural language prompts. Perfect for LinkedIn content, blog posts, emails, and other professional content, content.io eliminates the confusion around creating styled, curated PDFs that align with your professional goals.
 
 ## 📋 Features
 
-- **🎨 Professional Styling**: Modern, clean design with CSS variables and print-optimized layouts
-- **📄 Template-Based**: Separate HTML templates for easy content management
-- **🔒 Secure**: API key-based authentication with environment variable support
-- **⚡ Fast**: Efficient PDF rendering with configurable wait conditions
-- **🛠️ Flexible**: Customizable page formats, backgrounds, and rendering options
-- **📊 Detailed Output**: File size reporting and clear status messages
+- **🤖 AI-Powered Content Creation**: Transform natural language prompts into structured, professional PDFs using Claude, OpenAI, or Gemini
+- **🎨 Professional Styling**: Beautiful templates and professional formatting for all content types
+- **📝 Dual Input Modes**: Prompt-to-PDF mode for AI assistance or Markdown mode for precise control
+- **🔒 Secure & Private**: API key-based authentication with environment variable support
+- **⚡ Instant Results**: Generate professional PDFs in seconds
+- **📱 Responsive Interface**: Modern, user-friendly web interface optimized for all devices
 
 ## 🚀 Quick Start
 
 ### Prerequisites
 
 - Python 3.8 or higher
-- Doppio API key (sign up for free at [doppio.sh](https://doppio.sh))
+- AI API key (Claude, OpenAI, or Gemini)
+- Doppio.sh API key for PDF generation
 
 ### Installation
 
@@ -32,233 +33,180 @@ A Python-based HTML to PDF conversion tool using the [Doppio API](https://doppio
    pip install -r requirements.txt
    ```
 
-4. **Set up your API key**
+4. **Set up your API keys**
 
    Create a `.env` file in the project root:
    ```bash
    cp .env.example .env
    ```
 
-   Edit `.env` and add your Doppio API key:
+   Edit `.env` and add your API keys:
    ```
-   DOPPIO_API_KEY=your_actual_api_key_here
+   OPENAI_API_KEY=your_openai_api_key_here  # or ANTHROPIC_API_KEY for Claude
+   DOPPIO_API_KEY=your_doppio_api_key_here
    ```
 
-   **Alternative**: Set the environment variable directly:
-   
+   **Alternative**: Set the environment variables directly:
+
    - **Windows (Command Prompt)**:
      ```cmd
+     set OPENAI_API_KEY=your_api_key_here
      set DOPPIO_API_KEY=your_api_key_here
      ```
-   
+
    - **Windows (PowerShell)**:
      ```powershell
+     $env:OPENAI_API_KEY="your_api_key_here"
      $env:DOPPIO_API_KEY="your_api_key_here"
      ```
-   
+
    - **Linux/Mac**:
      ```bash
+     export OPENAI_API_KEY=your_api_key_here
      export DOPPIO_API_KEY=your_api_key_here
      ```
 
 ### Usage
 
-**Basic usage** (generates PDF from default template):
+**Start the web application**:
 ```bash
-python src/generator.py
+cd web_app
+python app.py
 ```
 
-**Using python-dotenv** (automatically loads .env file):
-```python
-from dotenv import load_dotenv
-load_dotenv()
+Access the interface at `http://localhost:5000`
 
-from generator import PDFGenerator
+**Basic API usage**:
+```python
+from src.generator import PDFGenerator
 
 generator = PDFGenerator()
-generator.generate_from_template(
-    template_name="template.html",
+pdf_path = generator.generate_pdf(
+    html_content="<h1>Your HTML Content</h1><p>Formatted professionally</p>",
     output_filename="my-document.pdf"
 )
 ```
-
-The generated PDF will be saved in the `output/` directory.
 
 ## 📁 Project Structure
 
 ```
 pdfcon/
-├── src/
-│   ├── generator.py       # Main PDF generation script
-│   └── template.html      # HTML template (ACP 101 Guide)
+├── src/                    # Core generation logic
+│   └── generator.py        # PDF generation utilities
+├── web_app/               # Main web application
+│   ├── app.py             # Flask application
+│   ├── static/            # CSS, JavaScript, images
+│   └── templates/         # HTML templates
 ├── output/                # Generated PDF files (created automatically)
 ├── requirements.txt       # Python dependencies
 ├── .env.example          # Example environment configuration
 ├── .gitignore            # Git ignore rules
-└── README.md             # This file
+├── README.md             # This file
+└── agent.md              # Project documentation
 ```
 
-## 🎨 Customization
+## 🎨 Creative Use Cases
 
-### Using Custom HTML Templates
+### LinkedIn Content PDFs
+Transform your LinkedIn insights into professional, shareable PDFs that showcase your expertise.
 
-1. **Create a new HTML file** in the `src/` directory:
-   ```html
-   <!-- src/my-template.html -->
-   <!DOCTYPE html>
-   <html>
-   <head>
-       <title>My Document</title>
-       <style>
-           /* Your custom styles */
-       </style>
-   </head>
-   <body>
-       <!-- Your content -->
-   </body>
-   </html>
-   ```
+### Blog Post Summaries
+Create downloadable summaries of your blog posts for lead generation and content marketing.
 
-2. **Generate PDF from your template**:
-   ```python
-   from src.generator import PDFGenerator
-   
-   generator = PDFGenerator()
-   generator.generate_from_template(
-       template_name="my-template.html",
-       output_filename="my-output.pdf"
-   )
-   ```
+### Professional Email Attachments
+Generate polished document attachments that make your emails stand out.
 
-### Customizing PDF Options
+### Educational Materials
+Create curriculum materials, guides, and tutorials with professional formatting.
 
-```python
-generator.generate_from_template(
-    template_name="template.html",
-    output_filename="custom.pdf",
-    page_format="Letter",        # A4, Letter, Legal, etc.
-    print_background=True,       # Include background colors/images
-    wait_for="networkidle0"      # Wait condition: networkidle0, load, domcontentloaded
-)
+## 🔧 Web Interface Features
+
+The content.io web interface includes:
+
+- **Prompt-to-PDF Mode**: Describe what you want in natural language and let AI structure your content
+- **Markdown Mode**: For precise control over formatting using markdown syntax
+- **Real-time Validation**: Instant feedback on your content
+- **Professional Styling**: Built-in templates for various content types
+- **One-Click Generation**: Create and download PDFs instantly
+
+### Example Prompt-to-PDF Usage:
+
+```
+Create a LinkedIn post summary PDF about AI in business:
+- Professional header with title
+- 3 key points about AI implementation
+- Actionable insights 
+- Clean, professional layout suitable for sharing
 ```
 
-### Using Direct HTML Content
+### Example Markdown Usage:
 
-```python
-html_content = """
-<!DOCTYPE html>
-<html>
-<body>
-    <h1>Hello, World!</h1>
-    <p>This is a simple PDF.</p>
-</body>
-</html>
-"""
+```markdown
+# The Future of AI in Business
 
-generator = PDFGenerator()
-generator.generate_pdf(
-    html_content=html_content,
-    output_filename="hello.pdf"
-)
+## Key Implementation Areas
+- Customer Service Automation
+- Data Analysis and Insights
+- Process Optimization
+
+## Success Metrics
+- 35% reduction in response time
+- 25% increase in customer satisfaction
+- 20% cost savings in operations
 ```
-
-## 🔧 API Reference
-
-### `PDFGenerator` Class
-
-#### `__init__(api_key: Optional[str] = None)`
-Initialize the PDF generator.
-- **api_key**: Doppio API key (defaults to `DOPPIO_API_KEY` environment variable)
-
-#### `load_html_template(template_name: str) -> str`
-Load HTML content from a template file.
-- **template_name**: Name of the template file in `src/` directory
-- **Returns**: HTML content as string
-
-#### `generate_pdf(html_content: str, output_filename: str, **kwargs) -> Path`
-Generate PDF from HTML content.
-- **html_content**: HTML string to convert
-- **output_filename**: Name of output PDF file
-- **page_format**: Page size (default: "A4")
-- **print_background**: Print backgrounds (default: True)
-- **wait_for**: Wait condition (default: "networkidle0")
-- **Returns**: Path to generated PDF file
-
-#### `generate_from_template(template_name: str, output_filename: str, **kwargs) -> Path`
-Generate PDF from a template file.
-- **template_name**: Template filename (default: "template.html")
-- **output_filename**: Output PDF filename (default: "output.pdf")
-- **Returns**: Path to generated PDF file
-
-## 📖 Example: Current Template
-
-The included `template.html` generates a comprehensive guide about the **Agent Client Protocol (ACP)**, featuring:
-
-- Modern, professional styling
-- Responsive typography with system fonts
-- Code syntax highlighting
-- Tables and blockquotes
-- Page breaks for printing
-- Print-optimized CSS media queries
-
-**Output**: `output/acp-101-guide.pdf` (7 pages)
 
 ## 🐛 Troubleshooting
 
-### Error: "DOPPIO_API_KEY environment variable is not set"
-**Solution**: Ensure your API key is set in `.env` file or as an environment variable.
+### Error: "API key environment variable is not set"
+**Solution**: Ensure your API keys are set in `.env` file or as environment variables.
 
-### Error: "Template not found"
-**Solution**: Verify the template file exists in the `src/` directory with the correct filename.
+### Error: "Web interface not loading"
+**Solution**: Verify you're running the Flask app from the `web_app/` directory.
 
-### Error: "Request timed out"
-**Solution**: Check your internet connection. Large HTML files may take longer to render.
+### Error: "PDF generation failed"
+**Solution**: Check your Doppio.sh API key and internet connection.
 
 ### Error: "HTTP 401 Unauthorized"
-**Solution**: Your API key is invalid. Get a new key from [doppio.sh](https://doppio.sh).
-
-### Error: "HTTP 429 Too Many Requests"
-**Solution**: You've exceeded your API rate limit. Wait a moment or upgrade your plan.
+**Solution**: Your API key is invalid. Check both AI and Doppio.sh API keys.
 
 ## 📝 Requirements
 
 - **Python**: 3.8+
 - **Dependencies**:
+  - `Flask>=2.0.1` - Web framework
   - `requests>=2.31.0` - HTTP library for API calls
-  - `python-dotenv>=1.0.0` - Environment variable management (optional)
+  - `markdown>=3.3.4` - Markdown processing
+  - `python-dotenv>=1.0.0` - Environment variable management
+  - `openai>=1.3.7` or `anthropic>=0.5.0` - AI service integration
 
 ## 🔐 Security Notes
 
-- Never commit your `.env` file or expose your API key
+- Never commit your `.env` file or expose your API keys
 - The `.gitignore` file is configured to exclude sensitive files
 - API keys should be treated as secrets
+- All user data is processed securely
 
 ## 📄 License
 
-This project is provided as-is for educational and commercial use. The Doppio API is subject to its own terms of service.
+This project is provided as-is for educational and commercial use. AI APIs and Doppio.sh API are subject to their own terms of service.
 
 ## 🤝 Contributing
 
 Contributions are welcome! Feel free to:
-- Add new HTML templates
-- Improve error handling
-- Add features (batch processing, custom fonts, etc.)
+- Add new creative templates
+- Improve AI integration
+- Enhance the user interface
 - Report bugs or suggest enhancements
-
-## 🔗 Resources
-
-- **Doppio API Documentation**: [https://doppio.sh/docs](https://doppio.sh)
-- **Sign Up for API Key**: [https://doppio.sh](https://doppio.sh)
-- **HTML to PDF Best Practices**: Consider using print-specific CSS with `@media print`
+- Add features (batch processing, custom styling, etc.)
 
 ## 💡 Tips
 
-1. **Use semantic HTML** for better PDF structure
-2. **Test print styles** with browser print preview (Ctrl+P / Cmd+P)
-3. **Optimize images** before embedding in HTML
-4. **Use `page-break-before` and `page-break-after`** CSS for page control
-5. **Set explicit page sizes** in CSS for consistent output
+1. **Be Specific in Your Prompts**: Detailed prompts generate better structured content
+2. **Use Professional Tone**: Match your content tone to your target audience
+3. **Preview Before Generating**: Review your content for alignment with goals
+4. **Leverage Both Modes**: Use Prompt mode for creativity, Markdown for precision
+5. **Test Different Outputs**: Experiment with different prompt styles for best results
 
 ---
 
-**Made with ❤️ for developers who need beautiful PDFs**
+**Transform your ideas into professional PDFs with content.io - Your all-in-one workspace for LinkedIn, blog, and email content.**
